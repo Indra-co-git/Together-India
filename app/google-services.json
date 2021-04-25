@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "155732839223",
+    "project_id": "together-india-89f22",
+    "storage_bucket": "together-india-89f22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155732839223:android:ac58cac7e11eff9a08e8b2",
+        "android_client_info": {
+          "package_name": "com.indra.togetherindia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155732839223-no8jbr5a5sq0qtul2gd9mdqsfk3ar7i4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indra.togetherindia",
+            "certificate_hash": "16bd6acffceba18de32e5c43e0ab2799387a4525"
+          }
+        },
+        {
+          "client_id": "155732839223-oc1bg5vtbk7i743nngal3sh02od7r2fb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAeAyNoUD4_6LkkWrn-nPo7w8RTRvNBLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155732839223-oc1bg5vtbk7i743nngal3sh02od7r2fb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
