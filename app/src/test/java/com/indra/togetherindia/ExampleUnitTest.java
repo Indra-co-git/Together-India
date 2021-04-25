@@ -1,4 +1,4 @@
-package com.phonepe.togetherindia;
+package com.indra.togetherindia;
 
 import org.junit.Test;
 
