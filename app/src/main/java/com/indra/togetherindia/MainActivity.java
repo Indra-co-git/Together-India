@@ -2,11 +2,13 @@ package com.indra.togetherindia;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     Spinner state_spinner,district_spinner;
+
+    Button help;
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
@@ -99,6 +103,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        help = findViewById(R.id.help_request);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(MainActivity.this,Form.class);
+                startActivity(intent);
             }
         });
     }
