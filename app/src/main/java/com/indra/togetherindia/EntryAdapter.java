@@ -32,13 +32,13 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
      String name = getItem(position).getName();
-     int age = getItem(position).getAge();
+     String age = getItem(position).getAge();
      String mobileNo = getItem(position).getMobileNo();
-     String stage = getItem(position).getStage();
+     String stage = getItem(position).getSeverity();
      String requirement = getItem(position).getRequirement();
      String state = getItem(position).getState();
      String city = getItem(position).getCity();
-     String date = getItem(position).getDate();
+     String date = getItem(position).getDateTime();
      
      Entry entry = new Entry(name,age,mobileNo,stage,requirement,state , city ,date);
 
@@ -54,7 +54,7 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
     TextView datetv = (TextView) convertView.findViewById(R.id.datei);
 
     nametv.setText(name);
-    agetv.setText(" Age : "+ String.valueOf(age));
+    agetv.setText(" Age : "+ age);
     mobiletv.setText("Contact : "+ mobileNo);
     stagetv.setText(stage);
     if(stage.equals("MILD"))

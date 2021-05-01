@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Entry entry = new Entry("Aman Gupta",24,"7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
+        Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
         ArrayList<Entry> helps = new ArrayList<>();
         helps.add(entry);
         helps.add(entry);

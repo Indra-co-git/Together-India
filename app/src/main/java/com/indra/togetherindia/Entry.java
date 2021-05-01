@@ -3,23 +3,27 @@ package com.indra.togetherindia;
 public class Entry {
 
     private String name;
-    private int age;
+    private String age;
     private String mobileNo;
-    private String stage;
+    private String severity;
     private String requirement;
     private String state;
     private String city;
-    private String date;
+    private String dateTime;
 
-    public Entry(String name, int age, String mobileNo, String stage, String requirement, String state, String city, String date) {
+    public Entry()
+    {
+
+    }
+    public Entry(String name, String age, String mobileNo, String stage, String requirement, String state, String city, String date) {
         this.name = name;
         this.age = age;
         this.mobileNo = mobileNo;
-        this.stage = stage;
+        this.severity = severity;
         this.requirement = requirement;
         this.state = state;
         this.city = city;
-        this.date = date;
+        this.dateTime = dateTime;
     }
 
     public String getName() {
@@ -30,11 +34,11 @@ public class Entry {
         this.name = name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -46,12 +50,12 @@ public class Entry {
         this.mobileNo = mobileNo;
     }
 
-    public String getStage() {
-        return stage;
+    public String getSeverity() {
+        return severity;
     }
 
-    public void setStage(String stage) {
-        this.stage = stage;
+    public void setSeverity(String severity) {
+        this.severity = severity;
     }
 
     public String getRequirement() {
@@ -78,11 +82,11 @@ public class Entry {
         this.city = city;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }
