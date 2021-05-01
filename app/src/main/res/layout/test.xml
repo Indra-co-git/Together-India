@@ -1,12 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/state_spinner"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:popupBackground="@drawable/rectangular"
+        app:layout_constraintVertical_chainStyle="packed" />
+    <Spinner
+        android:id="@+id/district_spinner"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:popupBackground="@drawable/rectangular"
+        app:layout_constraintVertical_chainStyle="packed" />
+    </LinearLayout>
+    <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:id="@+id/relative"
+       android:layout_gravity="bottom"
+       android:gravity="bottom">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list"
+        android:background="@drawable/transparent_rectengle">
+    </ListView>
+    <Button
+        android:id="@+id/help_request"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bluerec"
+        android:text="Request help"/>
+    <Button
+    android:id="@+id/be_helper"
+    android:layout_width="0dp"
+
     android:layout_height="wrap_content"
-    android:background="@drawable/sp_style"
-    android:textSize="12sp"
-    android:gravity="left"
-    android:textColor="#211F1F"
-    android:padding="2dip"
-    />
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:background="@color/colorAccent"
+    android:text="Be a helper" />
+    </RelativeLayout>
+
+</LinearLayout>

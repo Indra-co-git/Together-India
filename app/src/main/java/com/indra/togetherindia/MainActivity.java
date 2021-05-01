@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -33,18 +36,20 @@ public class MainActivity extends AppCompatActivity {
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String TAG="Main activity ";
+        listView = findViewById(R.id.list);
 
 
         state_arr.add("Select State");
-        district_arr.add("select district");
+        state_arr.add("India");
+        district_arr.add("Select District");
 
-        Log.d("TAG", "onCreate: created");
         try {
             InputStream is = getApplicationContext().getAssets().open("state_district.txt");
             int size = is.available();
@@ -65,11 +70,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         state_spinner = (Spinner)findViewById(R.id.state_spinner);
+        district_spinner = (Spinner)findViewById(R.id.district_spinner);
 
-         district_spinner = (Spinner)findViewById(R.id.district_spinner);
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.test,state_arr);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,state_arr);
 
         state_spinner.setAdapter(arrayAdapter);
 
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("TAG", "onItemSelected: "+state_arr.get(position));
+                district_arr.clear();
+                district_arr.add("Select District");
                 try {
                     JSONArray states=state_district_json.getJSONArray("states");
                     for(int i=0;i<states.length();i++)
@@ -89,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.test,district_arr);
-                    arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,district_arr);
+                    //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
 
                     district_spinner.setAdapter(arrayAdapter);
                 }
@@ -103,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+
+
             }
         });
 
@@ -114,5 +121,40 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Entry entry = new Entry("Aman Gupta",24,"7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
+        ArrayList<Entry> helps = new ArrayList<>();
+        helps.add(entry);
+        helps.add(entry);
+        helps.add(entry);
+        helps.add(entry);
+        helps.add(entry);
+
+        EntryAdapter entryAdapter = new EntryAdapter(this,R.layout.req_help_list_item, helps);
+        listView.setAdapter(entryAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Save" menu option
+            case R.id.helper:
+                Intent intent =new Intent(MainActivity.this,Helper.class);
+                startActivity(intent);
+                return true;
+            case R.id.info:
+                Intent intent1 =new Intent(MainActivity.this,Info.class);
+                startActivity(intent1);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
