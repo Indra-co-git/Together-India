@@ -1,6 +1,7 @@
 package com.indra.togetherindia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -123,15 +124,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
-        ArrayList<Entry> helps = new ArrayList<>();
-        helps.add(entry);
-        helps.add(entry);
-        helps.add(entry);
-        helps.add(entry);
-        helps.add(entry);
+        //firebase_update update = new firebase_update(entry);
+        List<Entry> helps_array = new ArrayList<>();
+        final firebase_update firebase_update_obj = new firebase_update(entry);
+        firebase_update_obj.getDataFromFirebase("all","all","help");
 
-        EntryAdapter entryAdapter = new EntryAdapter(this,R.layout.req_help_list_item, helps);
-        listView.setAdapter(entryAdapter);
+        firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer == 2)
+                {
+                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
+                    EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
+                    listView.setAdapter(entryAdapter);
+                }
+            }
+        });
+        //ArrayList<Entry> helps = new ArrayList<>(update.getDataFromFirebase("all","all","help"));
+
+//        helps.add(entry);
+//        helps.add(entry);
+//        helps.add(entry);
+//        helps.add(entry);
+//        helps.add(entry);
+
     }
 
     @Override
@@ -153,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.info:
                 Intent intent1 =new Intent(MainActivity.this,Info.class);
                 startActivity(intent1);
+                return true;
+            case R.id.register:
+                Intent intent2 =new Intent(MainActivity.this,Form.class);
+                startActivity(intent2);
                 return true;
         }
         return super.onOptionsItemSelected(item);

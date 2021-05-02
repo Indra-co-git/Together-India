@@ -11,6 +11,10 @@
         android:icon="@drawable/outline_live_help_black_36"
         android:title="Helper"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/register"
+        android:title="Register as Helper"
+        app:showAsAction="ifRoom" />
 
 
 </menu>

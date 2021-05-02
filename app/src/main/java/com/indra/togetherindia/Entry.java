@@ -15,7 +15,7 @@ public class Entry {
     {
 
     }
-    public Entry(String name, String age, String mobileNo, String stage, String requirement, String state, String city, String date) {
+    public Entry(String name, String age, String mobileNo, String severity, String requirement, String state, String city, String date) {
         this.name = name;
         this.age = age;
         this.mobileNo = mobileNo;
