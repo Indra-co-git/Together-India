@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Form"
-    android:orientation="vertical">
+    >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/state"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/city"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,9 +57,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="10"
-
             android:textSize="20sp"
-
             android:hint="Mobile No."/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,59 +81,29 @@
                 android:hint="Age"/>
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/a2"
-            android:layout_margin="8dp">
-            <EditText
-                android:id="@+id/sev"
-                android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="left">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="1"
-
-                android:textSize="20sp"
-
-                android:hint="Severity"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginLeft="30dp"
+                android:gravity="left"
+                android:text="Patient's Condition"/>
+        <Spinner
+            android:id="@+id/sev"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/et_style"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/a3"
-            android:layout_margin="8dp">
-            <Spinner
-                android:id="@+id/state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:hint="State"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/a4"
-            android:layout_margin="8dp">
-            <EditText
-                android:id="@+id/city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-
-                android:hint="City"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -123,7 +115,8 @@
             android:id="@+id/requirement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="6"
+            android:lines="5"
+            android:maxLength="300"
             android:hint="Requirement"
             android:gravity="top"
             />
@@ -140,3 +133,4 @@
         />
 
 </LinearLayout>
+</ScrollView>

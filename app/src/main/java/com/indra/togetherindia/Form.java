@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +32,7 @@ public class Form extends AppCompatActivity {
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
+    final List<String> sev_arr = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +44,8 @@ public class Form extends AppCompatActivity {
         final EditText age=findViewById(R.id.age);
         final EditText mobile=findViewById(R.id.mobile);
         final Spinner state=findViewById(R.id.state);
-        final EditText city=findViewById(R.id.city);
-        final EditText severity=findViewById(R.id.sev);
+        final Spinner city_spinner = findViewById(R.id.city);
+        final Spinner severity=findViewById(R.id.sev);
         final EditText requirement=findViewById(R.id.requirement);
         Button submit_but=findViewById(R.id.submit);
 
@@ -90,7 +92,7 @@ public class Form extends AppCompatActivity {
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,district_arr);
                     //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
 
-                    //district_spinner.setAdapter(arrayAdapter);
+                    city_spinner.setAdapter(arrayAdapter);
                 }
                 catch ( JSONException e) {
                     e.printStackTrace();
@@ -107,12 +109,21 @@ public class Form extends AppCompatActivity {
         });
 
         final firebase_update firebase_update_obj = new firebase_update(entrydata);
-        firebase_update_obj.getDataFromFirebase("Jharkhand","garhwa","help");
+
+        sev_arr.add("ASYMPTOMATIC");
+        sev_arr.add("MILD");
+        sev_arr.add("SEVIOR");
+        ArrayAdapter<String> sevArraryadapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,sev_arr);
+        severity.setAdapter(sevArraryadapter);
 
         firebase_update_obj.uplaod_status.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 Log.d(TAG, "onChanged: ------------  "+integer.toString());
+                if(integer == 1)
+                {
+                    Toast.makeText(getApplicationContext(),"Request Submitted Successfully",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         submit_but.setOnClickListener(new View.OnClickListener() {
@@ -125,8 +136,8 @@ public class Form extends AppCompatActivity {
                     entrydata.setName(name.getText().toString());
                     entrydata.setAge(age.getText().toString());
                     entrydata.setState(String.valueOf(state.getSelectedItem()));
-                    entrydata.setCity(city.getText().toString());
-                    entrydata.setSeverity(severity.getText().toString());
+                    entrydata.setCity(String.valueOf(city_spinner.getSelectedItem()));
+                    entrydata.setSeverity(String.valueOf(severity.getSelectedItem()));
                     entrydata.setRequirement(requirement.getText().toString());
                     entrydata.setMobileNo(mobile.getText().toString());
                     entrydata.setDateTime(currentTime.toString());

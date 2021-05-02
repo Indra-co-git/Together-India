@@ -2,13 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/et_style"
+    android:layout_margin="15dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:id="@+id/requirementi"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:text="Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him."/>
     <LinearLayout
@@ -23,27 +25,27 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="Aman Gupta"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/agei"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:text="24"/>
         <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Stage : "
+        android:textSize="12sp"
+        android:text="Condition : "
         android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/stagei"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:text="Sevior"
             android:textAllCaps="true"/>
     </LinearLayout>
@@ -51,13 +53,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+
         android:layout_marginLeft="5dp">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/placei"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:text="Uttar Pradesh ( Hardoi )"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/contacti"
+            android:textSize="12sp"
+            android:text="7737476484"/>
 
     </LinearLayout>
 
@@ -65,20 +76,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="5dp">
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp">
+
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/contacti"
-            android:textSize="16sp"
-            android:text="7737476484"/>
-        <TextView
+            android:layout_gravity="right"
+            android:gravity="right"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/datei"
-            android:textSize="16sp"
+            android:textColor="#6A6767"
+            android:textSize="8sp"
             android:text="19:17 May 01 "/>
     </LinearLayout>
 

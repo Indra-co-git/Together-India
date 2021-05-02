@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
+
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,district_arr);
                     //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
 
@@ -104,12 +105,27 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.e("TAG", "onCreate: "+e );
                 }
+
+                updateList(state_spinner.getSelectedItem().toString(),"all","help");
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
 
+
+            }
+        });
+
+        district_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            updateList(state_spinner.getSelectedItem().toString(),district_spinner.getSelectedItem().toString(),"help");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -124,8 +140,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
-        //firebase_update update = new firebase_update(entry);
-        List<Entry> helps_array = new ArrayList<>();
         final firebase_update firebase_update_obj = new firebase_update(entry);
         firebase_update_obj.getDataFromFirebase("all","all","help");
 
@@ -140,14 +154,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        //ArrayList<Entry> helps = new ArrayList<>(update.getDataFromFirebase("all","all","help"));
+    }
 
-//        helps.add(entry);
-//        helps.add(entry);
-//        helps.add(entry);
-//        helps.add(entry);
-//        helps.add(entry);
+    public void updateList(String state,String city,String type){
+        Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
+        final firebase_update firebase_update_obj = new firebase_update(entry);
+        firebase_update_obj.getDataFromFirebase(state,city,type);
 
+        firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer == 2)
+                {
+                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
+                    EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
+                    listView.setAdapter(entryAdapter);
+                }
+            }
+        });
     }
 
     @Override

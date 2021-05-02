@@ -69,7 +69,7 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
     }
     reqtv.setText(requirement);
     placetv.setText(state + " ( " + city +" ) ");
-    datetv.setText(date);
+    datetv.setText(date.substring(0,16));
 
     return convertView;
     }
