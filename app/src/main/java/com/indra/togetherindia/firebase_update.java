@@ -60,7 +60,6 @@ public void getDataFromFirebase(String state,String city,String type){
                         all_required_data.add(snap.getValue(Entry.class));
                     }
                     get_data_status.setValue(2);
-                    Log.d(TAG, "onDataChange: "+all_required_data.get(1).getName());
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {

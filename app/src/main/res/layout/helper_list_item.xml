@@ -4,50 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/et_style"
-    android:layout_margin="15dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:id="@+id/requirementi"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:text="Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him."/>
-    <LinearLayout
+    android:layout_margin="15dp"
+    android:padding="5dp">
+   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="5dp">
 
         <TextView
-            android:id="@+id/namei"
+            android:id="@+id/nameo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="Aman Gupta"
-            android:textSize="12sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:id="@+id/agei"
-            android:textSize="12sp"
-            android:text="24"/>
-        <TextView
-        android:layout_width="0dp"
-        android:layout_weight="0.8"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="Condition : "
-        android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
-            android:layout_height="wrap_content"
-            android:id="@+id/stagei"
-            android:textSize="12sp"
-            android:text="Sevior"
-            android:textAllCaps="true"/>
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+        
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,18 +33,28 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/placei"
-            android:textSize="12sp"
+            android:id="@+id/placeo"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="Uttar Pradesh ( Hardoi )"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/contacti"
-            android:textSize="12sp"
+            android:id="@+id/contacto"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="7737476484"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/requiremento"
+        android:textSize="12sp"
+        android:layout_margin="5dp"
+        android:text="Can Provide Oxygen Concentrator on rent for few days in delhi"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/datei"
+            android:id="@+id/dateo"
             android:textColor="#6A6767"
             android:textSize="8sp"
             android:text="19:17 May 01 "/>

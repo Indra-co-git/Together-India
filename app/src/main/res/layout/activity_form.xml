@@ -58,7 +58,7 @@
             android:inputType="number"
             android:maxLength="10"
             android:textSize="20sp"
-            android:hint="Mobile No."/>
+            android:hint="Mobile No.(Possibly WhatsApp)"/>
 
     </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
@@ -93,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:gravity="left"
+                android:id="@+id/heading_cond"
                 android:text="Patient's Condition"/>
         <Spinner
             android:id="@+id/sev"
@@ -117,7 +118,7 @@
             android:layout_height="wrap_content"
             android:lines="5"
             android:maxLength="300"
-            android:hint="Requirement"
+            android:hint="Details"
             android:gravity="top"
             />
     </com.google.android.material.textfield.TextInputLayout>

@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent =new Intent(MainActivity.this,Form.class);
+                intent.putExtra("screen","register");
                 startActivity(intent);
             }
         });
@@ -157,9 +158,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateList(String state,String city,String type){
+
+
         Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
         final firebase_update firebase_update_obj = new firebase_update(entry);
         firebase_update_obj.getDataFromFirebase(state,city,type);
+        ArrayList<Entry> emptylist= new ArrayList<>();
+        EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, emptylist);
+        listView.setAdapter(entryAdapter);
 
         firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
             @Override
@@ -196,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.register:
                 Intent intent2 =new Intent(MainActivity.this,Form.class);
+                intent2.putExtra("screen","screen");
                 startActivity(intent2);
                 return true;
         }

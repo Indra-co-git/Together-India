@@ -3,6 +3,7 @@ package com.indra.togetherindia;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +52,17 @@ public class Form extends AppCompatActivity {
         final Spinner severity=findViewById(R.id.sev);
         final EditText requirement=findViewById(R.id.requirement);
         Button submit_but=findViewById(R.id.submit);
+        final TextView heading = findViewById(R.id.heading_cond);
+        final TextInputLayout reqq = findViewById(R.id.f1);
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("screen").equals("screen"))
+        {
+             severity.setVisibility(View.INVISIBLE);
+             //requirement.setHint("What can you provide ?");
+             heading.setVisibility(View.INVISIBLE);
+             //reqq.setVisibility(View.GONE);
+        }
 
         try {
             InputStream is = getApplicationContext().getAssets().open("state_district.txt");
@@ -130,9 +145,7 @@ public class Form extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-
                     Date currentTime = Calendar.getInstance().getTime();
-
                     entrydata.setName(name.getText().toString());
                     entrydata.setAge(age.getText().toString());
                     entrydata.setState(String.valueOf(state.getSelectedItem()));
@@ -143,8 +156,13 @@ public class Form extends AppCompatActivity {
                     entrydata.setDateTime(currentTime.toString());
                     Log.d(TAG, "onClick: "+entrydata);
 
-
-                    firebase_update_obj.setDataOnFirebase("help");
+                    if(getIntent().getStringExtra("screen").equals("screen"))
+                    {
+                        firebase_update_obj.setDataOnFirebase("helper");
+                    }
+                    else {
+                        firebase_update_obj.setDataOnFirebase("help");
+                    }
 
 
                 } catch (JSONException e) {
