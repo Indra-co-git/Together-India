@@ -38,7 +38,7 @@
         android:layout_weight="0.8"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Condition : "
+        android:text="Condition "
         android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
