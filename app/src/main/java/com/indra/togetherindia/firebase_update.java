@@ -13,8 +13,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class firebase_update {
 Entry entrydata;
@@ -41,7 +48,7 @@ public void setDataOnFirebase(String type) throws JSONException {
 }
 
 public void getDataFromFirebase(String state,String city,String type){
-    Log.d(TAG, "getDataFromFirebase");
+    Log.d(TAG, "getDataFromFirebase"+state+city);
     get_data_status.setValue(0);
     all_required_data.clear();
     if(state=="all"){
@@ -50,16 +57,17 @@ public void getDataFromFirebase(String state,String city,String type){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     get_data_status.setValue(1);
-                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
+//                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
                     if(!snapshot.exists()){
                         get_data_status.setValue(-1);
                         return;
                     }
                     for (DataSnapshot snap : snapshot.getChildren()){
-                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
+//                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
                         all_required_data.add(snap.getValue(Entry.class));
                     }
                     get_data_status.setValue(2);
+                    sort_list_data();
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -80,19 +88,19 @@ public void getDataFromFirebase(String state,String city,String type){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     get_data_status.setValue(1);
-                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
+//                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
                     if(!snapshot.exists()){
                         get_data_status.setValue(-1);
                         return;
                     }
                     for (DataSnapshot snap : snapshot.getChildren()){
-                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
+//                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
                         for (DataSnapshot snap_city : snap.getChildren()){
                             all_required_data.add(snap_city.getValue(Entry.class));
                         }
                     }
                     get_data_status.setValue(2);
-                Log.d(TAG, "onDataChange: "+all_required_data.size());
+                    sort_list_data();
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -114,16 +122,17 @@ public void getDataFromFirebase(String state,String city,String type){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     get_data_status.setValue(1);
-                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
+//                    Log.d(TAG, "onDataChange: ------- "+snapshot.toString());
                     if(!snapshot.exists()){
                         get_data_status.setValue(-1);
                         return;
                     }
                     for (DataSnapshot snap : snapshot.getChildren()){
-                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
+//                        Log.d(TAG, "onDataChange: ------- "+snap.getValue().toString());
                         all_required_data.add(snap.getValue(Entry.class));
                     }
                     get_data_status.setValue(2);
+                    sort_list_data();
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -137,6 +146,28 @@ public void getDataFromFirebase(String state,String city,String type){
         }
 
     }
+}
+
+private void sort_list_data(){
+
+    Collections.sort(all_required_data, new Comparator<Entry>(){
+        public int compare(Entry obj1, Entry obj2) {
+            // ## Ascending order
+
+            DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
+            Date date1 = null,date2=null;
+            try {
+                date1 = format.parse(obj1.getDateTime());
+                date2 = format.parse(obj2.getDateTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+//            Log.d(TAG, "compare: "+obj1.getDateTime()+date2);
+            return date2.compareTo(date1);
+        }
+    });
+
 }
 
 // if successfully set the data return 1

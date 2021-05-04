@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -146,6 +147,7 @@ public class Form extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Date currentTime = Calendar.getInstance().getTime();
+
                     entrydata.setName(name.getText().toString());
                     entrydata.setAge(age.getText().toString());
                     entrydata.setState(String.valueOf(state.getSelectedItem()));
