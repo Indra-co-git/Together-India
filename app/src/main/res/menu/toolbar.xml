@@ -8,11 +8,13 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/helper"
-        android:icon="@drawable/outline_live_help_black_36"
+        android:icon="@drawable/outline_h_plus_mobiledata_black_36"
         android:title="Helper"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/register"
+        android:icon="@drawable/hlpr1"
+        android:alphabeticShortcut="Be a Helper"
         android:title="Register as Helper"
         app:showAsAction="ifRoom" />
 

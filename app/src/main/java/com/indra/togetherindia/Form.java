@@ -65,6 +65,7 @@ public class Form extends AppCompatActivity {
              //reqq.setVisibility(View.GONE);
         }
 
+        state_arr.add("Select State");
         try {
             InputStream is = getApplicationContext().getAssets().open("state_district.txt");
             int size = is.available();
@@ -148,15 +149,26 @@ public class Form extends AppCompatActivity {
                 try {
                     Date currentTime = Calendar.getInstance().getTime();
 
-                    entrydata.setName(name.getText().toString());
-                    entrydata.setAge(age.getText().toString());
-                    entrydata.setState(String.valueOf(state.getSelectedItem()));
-                    entrydata.setCity(String.valueOf(city_spinner.getSelectedItem()));
-                    entrydata.setSeverity(String.valueOf(severity.getSelectedItem()));
-                    entrydata.setRequirement(requirement.getText().toString());
-                    entrydata.setMobileNo(mobile.getText().toString());
-                    entrydata.setDateTime(currentTime.toString());
+                    entrydata.setName(name.getText().toString().trim());
+                    entrydata.setAge(age.getText().toString().trim());
+                    entrydata.setState(String.valueOf(state.getSelectedItem()).trim());
+                    entrydata.setCity(String.valueOf(city_spinner.getSelectedItem()).trim());
+                    entrydata.setSeverity(String.valueOf(severity.getSelectedItem()).trim());
+                    entrydata.setRequirement(requirement.getText().toString().trim());
+                    entrydata.setMobileNo(mobile.getText().toString().trim());
+                    entrydata.setDateTime(currentTime.toString().trim());
                     Log.d(TAG, "onClick: "+entrydata);
+                    
+                    if(entrydata.getName().isEmpty() || entrydata.getAge().isEmpty() || entrydata.getAge().isEmpty() || entrydata.getState().equalsIgnoreCase("select state") || entrydata.getCity().equalsIgnoreCase("select district"))
+                    {
+                        Toast.makeText(getApplicationContext(),"Field can't be left Blank",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if(entrydata.getMobileNo().length()<10)
+                    {
+                        Toast.makeText(getApplicationContext(),"Mobile no. should be of 10 digits",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if(getIntent().getStringExtra("screen").equals("screen"))
                     {

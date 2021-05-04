@@ -19,7 +19,7 @@ public class Info extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        String about_app="<p><strong>With this motive of &quot;If we stand together we can defeat covid and save lives&quot;</strong></p>\n" +
+        String about_app="<p><strong>With the motive of &quot;If we stand together we can defeat covid and save lives&quot;</strong></p>\n" +
                 "<p>Due to this pandemic, many people are in a helpless situation inside/outside hospitals but also 99% of people of India are not sick now and trying to help others and we believe if we stand together we can save lives and defeat this Pandemic</p>\n" +
                 "<p>Here we tried to make a platform to connect those to need help and those who want to help by amplifying the voice of the needy.</p>\n" +
                 "<p><br></p>\n" +

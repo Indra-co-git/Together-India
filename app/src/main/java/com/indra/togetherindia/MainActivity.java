@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TAG", "onCreate: "+e );
         }
         if(state_spinner.getSelectedItem().toString()=="Select State"||state_spinner.getSelectedItem().toString()=="India")
-
             updateList("all","all","help");
         else
             Log.d("TAG", "post_state_select: --------------- "+state_spinner.getSelectedItem().toString());

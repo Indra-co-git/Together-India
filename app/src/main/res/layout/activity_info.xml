@@ -90,12 +90,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/about_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:nestedScrollingEnabled="true"
                 android:text="TextView" />
         </LinearLayout>
