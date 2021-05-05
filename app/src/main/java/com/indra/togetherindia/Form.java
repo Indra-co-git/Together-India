@@ -140,6 +140,7 @@ public class Form extends AppCompatActivity {
                 if(integer == 1)
                 {
                     Toast.makeText(getApplicationContext(),"Request Submitted Successfully",Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

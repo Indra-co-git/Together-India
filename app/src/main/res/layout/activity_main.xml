@@ -32,6 +32,24 @@
         android:layout_gravity="bottom"
         android:gravity="bottom">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_text"
+            android:textSize="40sp"
+            android:textColor="#392E2E"
+            android:text="No Data Present !!"
+            android:layout_centerInParent="true"
+            />
+        <ProgressBar
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:elevation="8dp"
+            android:outlineSpotShadowColor="@color/colorPrimaryDark"
+            android:outlineAmbientShadowColor="@color/colorAccent"
+            android:id="@+id/pb"
+            android:layout_centerInParent="true"/>
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

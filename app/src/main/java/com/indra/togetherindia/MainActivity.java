@@ -15,7 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +35,10 @@ public class MainActivity extends AppCompatActivity {
     String state_district_str = null;
     String selected_state,selected_city;
 
+    ProgressBar progressBar;
 
+
+    TextView emptyview;
     Spinner state_spinner,district_spinner;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
@@ -49,18 +54,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         String TAG="Main activity ";
         listView = findViewById(R.id.list);
+        progressBar = findViewById(R.id.pb);
+        emptyview = findViewById(R.id.empty_text);
+        state_spinner = (Spinner)findViewById(R.id.state_spinner);
+        district_spinner = (Spinner)findViewById(R.id.district_spinner);
+
+        emptyview.setVisibility(View.INVISIBLE);
+
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sp.edit();
-        selected_state=sp.getString("selected_state",null);
-        selected_city=sp.getString("selected_city",null);
-        Log.d(TAG, "onCreate: --------- " + selected_state);
-        Log.d(TAG, "onCreate: --------- " + selected_city);
+        selected_state=sp.getString("selected_state","Select State");
+        selected_city=sp.getString("selected_city","Select District");
 
+
+        Log.d("state saved",selected_state.toString());
+        Log.d("city saved",selected_city.toString());
         state_arr.add("Select State");
         state_arr.add("India");
         district_arr.add("Select District");
 
+        // gets states
         try {
             InputStream is = getApplicationContext().getAssets().open("state_district.txt");
             int size = is.available();
@@ -80,17 +94,15 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "onCreate: "+e );
         }
 
-        state_spinner = (Spinner)findViewById(R.id.state_spinner);
-        district_spinner = (Spinner)findViewById(R.id.district_spinner);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,state_arr);
-
         state_spinner.setAdapter(arrayAdapter);
 
         select_state_spinner();
         district_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                progressBar.setVisibility(View.VISIBLE);
                 post_dist_select(district_arr.get(position));
             }
 
@@ -101,15 +113,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        if(selected_state!=null)
-        {
-            state_spinner.setSelection(getIndex(state_spinner, selected_state));
-            post_state_select(selected_state);
-            if(selected_city!=null){
-                district_spinner.setSelection(getIndex(district_spinner,selected_city));
-                post_dist_select(selected_city);
-            }
-        }
+//        if(selected_state!=null)
+//        {
+//            state_spinner.setSelection(getIndex(state_spinner, selected_state));
+//            post_state_select(selected_state);
+//
+//        }
 
 
         help = findViewById(R.id.help_request);
@@ -122,27 +131,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
-        final firebase_update firebase_update_obj = new firebase_update(entry);
 
-        firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if(integer == 2)
-                {
-                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
-                    EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
-                    listView.setAdapter(entryAdapter);
-                }
-            }
-        });
+        if(selected_city!="Select District" && selected_state!="Select State")
+        {
+            updateList(selected_state,selected_city,"help");
+        }
+        else
+        {
+            updateList("all","all","help");
+        }
+        state_spinner.setSelection(getIndex(state_spinner,selected_state));
     }
 
     public void select_state_spinner(){
         state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                post_state_select(state_arr.get(position));
+                progressBar.setVisibility(View.VISIBLE);
+                post_state_select(state_spinner.getSelectedItem().toString());
             }
 
             @Override
@@ -155,19 +161,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void post_state_select(String select_state){
-        Log.d("TAG", "onItemSelected: "+select_state);
+
         district_arr.clear();
         district_arr.add("Select District");
-
         if(select_state!="Select State")
         {
             editor.putString("selected_state",select_state);
-            if ( select_state != "Jharkhand")
-            {
-                editor.putString("selected_city",null);
-                Log.d("TAG", "onItemSelected: ---------------------------------- "+select_state+selected_state);
-            }
             editor.commit();
+
         }
         try {
             JSONArray states=state_district_json.getJSONArray("states");
@@ -186,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
             //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
 
             district_spinner.setAdapter(arrayAdapter);
+            district_spinner.setSelection(getIndex(district_spinner,selected_city));
+
         }
         catch ( JSONException e) {
             e.printStackTrace();
@@ -194,8 +197,9 @@ public class MainActivity extends AppCompatActivity {
         if(state_spinner.getSelectedItem().toString()=="Select State"||state_spinner.getSelectedItem().toString()=="India")
             updateList("all","all","help");
         else
-            Log.d("TAG", "post_state_select: --------------- "+state_spinner.getSelectedItem().toString());
             updateList(state_spinner.getSelectedItem().toString(),"all","help");
+
+
     }
 
     private void post_dist_select(String select_dist){
@@ -207,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(district_spinner.getSelectedItem().toString()=="Select District")
-
             updateList(state_spinner.getSelectedItem().toString(),"all","help");
         else
             updateList(state_spinner.getSelectedItem().toString(),district_spinner.getSelectedItem().toString(),"help");
@@ -219,10 +222,9 @@ public class MainActivity extends AppCompatActivity {
         Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
         final firebase_update firebase_update_obj = new firebase_update(entry);
         firebase_update_obj.getDataFromFirebase(state,city,type);
-        ArrayList<Entry> emptylist= new ArrayList<>();
+        final ArrayList<Entry> emptylist= new ArrayList<>();
         EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, emptylist);
         listView.setAdapter(entryAdapter);
-
         firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -231,6 +233,11 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
                     EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
                     listView.setAdapter(entryAdapter);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    if(firebase_update_obj.all_required_data.size()==0)
+                    {
+                     emptyview.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
