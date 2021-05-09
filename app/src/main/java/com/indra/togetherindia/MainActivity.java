@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,9 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     TextView emptyview;
     Spinner state_spinner,district_spinner;
+    SearchView searchView;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     Button help;
+
+    firebase_update firebase_update_obj;
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         emptyview = findViewById(R.id.empty_text);
         state_spinner = (Spinner)findViewById(R.id.state_spinner);
         district_spinner = (Spinner)findViewById(R.id.district_spinner);
-
+        searchView=(SearchView)findViewById(R.id.search);
         emptyview.setVisibility(View.INVISIBLE);
 
 
@@ -68,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         selected_city=sp.getString("selected_city","Select District");
 
 
-        Log.d("state saved",selected_state.toString());
-        Log.d("city saved",selected_city.toString());
+        Log.d("state saved --------- ",selected_state.toString());
+        Log.d("city saved ---------- ",selected_city.toString());
         state_arr.add("Select State");
         state_arr.add("India");
         district_arr.add("Select District");
@@ -98,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,state_arr);
         state_spinner.setAdapter(arrayAdapter);
 
+
+        Log.d(TAG, "onCreate: --- -------"+state_spinner.getSelectedItem().toString());
         select_state_spinner();
+        Log.d(TAG, "onCreate: after select_state_spinner()");
         district_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -111,14 +118,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Log.d(TAG, "onCreate: after district_spinner");
 
 
-//        if(selected_state!=null)
-//        {
-//            state_spinner.setSelection(getIndex(state_spinner, selected_state));
-//            post_state_select(selected_state);
-//
-//        }
+        if(selected_state!=null)
+        {
+            state_spinner.setSelection(getIndex(state_spinner, selected_state));
+            post_state_select(selected_state);
+            if (selected_city!=null){
+                district_spinner.setSelection(getIndex(district_spinner, selected_city));
+                post_dist_select(selected_city);
+            }
+
+        }
 
 
         help = findViewById(R.id.help_request);
@@ -132,22 +144,51 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        if(selected_city!="Select District" && selected_state!="Select State")
-        {
-            updateList(selected_state,selected_city,"help");
-        }
-        else
-        {
-            updateList("all","all","help");
-        }
-        state_spinner.setSelection(getIndex(state_spinner,selected_state));
+//        if(selected_city!="Select District" && selected_state!="Select State")
+//        {
+//            updateList(selected_state,selected_city,"help");
+//        }
+//        else
+//        {
+//            updateList("all","all","help");
+//        }
+//        state_spinner.setSelection(getIndex(state_spinner,selected_state));
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("search text change ", "onQueryTextChange: "+newText);
+                List<Entry> after_search_list=firebase_update_obj.all_required_data;
+                if (newText.length()>0)
+                {
+                    search search_obj=new search();
+                    after_search_list=search_obj.search_text(newText,after_search_list);
+                }
+
+                EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) after_search_list);
+                listView.setAdapter(entryAdapter);
+                return false;
+            }
+        });
+
+
+
     }
 
     public void select_state_spinner(){
+
+        Log.d("selected state", "select_state_spinner: ---- "+state_spinner.getSelectedItem().toString());
         state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
+                Log.d("selected state", "onItemSelected: ---- "+state_spinner.getSelectedItem().toString());
                 post_state_select(state_spinner.getSelectedItem().toString());
             }
 
@@ -164,11 +205,17 @@ public class MainActivity extends AppCompatActivity {
 
         district_arr.clear();
         district_arr.add("Select District");
-        if(select_state!="Select State")
+        Log.d("post state", "post_state_select: "+select_state);
+        String t=selected_state;
+        if(!select_state.equals("Select State") && !select_state.equals(selected_state))
         {
+            Log.d("post editor", "post_state_select: "+select_state+" "+selected_state+selected_state.length());
             editor.putString("selected_state",select_state);
+            editor.putString("selected_city","Select District");
             editor.commit();
 
+            selected_state=sp.getString("selected_state","Select State");
+            selected_city=sp.getString("selected_city","Select District");
         }
         try {
             JSONArray states=state_district_json.getJSONArray("states");
@@ -208,19 +255,21 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("selected_city",select_dist);
             Log.d("TAG", "post_dist_select: --------- "+select_dist);
             editor.commit();
+
+            selected_city=sp.getString("selected_city","Select District");
         }
 
         if(district_spinner.getSelectedItem().toString()=="Select District")
             updateList(state_spinner.getSelectedItem().toString(),"all","help");
         else
+            Log.d("selected state and dist", "post_dist_select: ");
             updateList(state_spinner.getSelectedItem().toString(),district_spinner.getSelectedItem().toString(),"help");
     }
 
     public void updateList(String state,String city,String type){
 
-
         Entry entry = new Entry("Aman Gupta","24","7737476484","MILD","Need a bed with ventilator in any hospitlal in patna. Condition is very critical please help willing to pay any amount of money needed please save him.","Bihar","Patna","19:17 May 01 2021");
-        final firebase_update firebase_update_obj = new firebase_update(entry);
+        firebase_update_obj = new firebase_update(entry);
         firebase_update_obj.getDataFromFirebase(state,city,type);
         final ArrayList<Entry> emptylist= new ArrayList<>();
         EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, emptylist);

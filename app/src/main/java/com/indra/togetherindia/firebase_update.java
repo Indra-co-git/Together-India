@@ -49,6 +49,10 @@ public void setDataOnFirebase(String type) throws JSONException {
 
 public void getDataFromFirebase(String state,String city,String type){
     Log.d(TAG, "getDataFromFirebase"+state+city);
+    if(state=="Select State"||state=="India")
+        state="all";
+    else if(city=="Select District")
+        city="all";
     get_data_status.setValue(0);
     all_required_data.clear();
     if(state=="all"){
