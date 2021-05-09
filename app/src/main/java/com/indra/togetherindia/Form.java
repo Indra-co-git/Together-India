@@ -127,7 +127,7 @@ public class Form extends AppCompatActivity {
 
         final firebase_update firebase_update_obj = new firebase_update(entrydata);
 
-        sev_arr.add("ASYMPTOMATIC");
+        sev_arr.add("LOW");
         sev_arr.add("MILD");
         sev_arr.add("SEVIOR");
         ArrayAdapter<String> sevArraryadapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,sev_arr);

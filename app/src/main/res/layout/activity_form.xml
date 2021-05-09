@@ -91,13 +91,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="34dp"
                 android:gravity="left"
                 android:id="@+id/heading_cond"
                 android:text="Patient's Condition"/>
         <Spinner
             android:id="@+id/sev"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="50dp"
             android:layout_width="wrap_content"
             android:layout_gravity="left"
             android:background="@drawable/et_style"

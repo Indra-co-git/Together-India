@@ -4,14 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Helper">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/et_style"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <Spinner
+
+            android:id="@+id/state_spinnerh"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+        <Spinner
+            android:id="@+id/district_spinnerh"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorPrimary">
+        <ProgressBar
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:elevation="8dp"
+            android:outlineAmbientShadowColor="@color/colorAccent"
+            android:id="@+id/pbh"
+            android:layout_centerInParent="true"/>
     <ListView
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/helpers_list"
         android:background="@color/colorPrimary"
         android:divider="@color/colorPrimary"
         android:dividerHeight="5dp"/>
+    </RelativeLayout>
 
 </LinearLayout>

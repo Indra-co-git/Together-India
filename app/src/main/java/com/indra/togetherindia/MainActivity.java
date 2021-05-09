@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -33,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
     JSONObject state_district_json;
     String state_district_str = null;
-    String selected_state,selected_city;
 
     ProgressBar progressBar;
 
+    public static PackageManager packageManager;
 
     TextView emptyview;
     Spinner state_spinner,district_spinner;
-    SharedPreferences sp;
+
     SharedPreferences.Editor editor;
     Button help;
 
@@ -60,16 +61,11 @@ public class MainActivity extends AppCompatActivity {
         district_spinner = (Spinner)findViewById(R.id.district_spinner);
 
         emptyview.setVisibility(View.INVISIBLE);
+        packageManager = getPackageManager();
 
 
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sp.edit();
-        selected_state=sp.getString("selected_state","Select State");
-        selected_city=sp.getString("selected_city","Select District");
 
 
-        Log.d("state saved",selected_state.toString());
-        Log.d("city saved",selected_city.toString());
         state_arr.add("Select State");
         state_arr.add("India");
         district_arr.add("Select District");
@@ -103,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
-                post_dist_select(district_arr.get(position));
+                post_dist_select(district_spinner.getSelectedItem().toString());
             }
 
             @Override
@@ -132,15 +128,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        if(selected_city!="Select District" && selected_state!="Select State")
-        {
-            updateList(selected_state,selected_city,"help");
-        }
-        else
-        {
+
             updateList("all","all","help");
-        }
-        state_spinner.setSelection(getIndex(state_spinner,selected_state));
+
     }
 
     public void select_state_spinner(){
@@ -164,12 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         district_arr.clear();
         district_arr.add("Select District");
-        if(select_state!="Select State")
-        {
-            editor.putString("selected_state",select_state);
-            editor.commit();
 
-        }
         try {
             JSONArray states=state_district_json.getJSONArray("states");
             for(int i=0;i<states.length();i++)
@@ -187,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
 
             district_spinner.setAdapter(arrayAdapter);
-            district_spinner.setSelection(getIndex(district_spinner,selected_city));
 
         }
         catch ( JSONException e) {
@@ -203,17 +187,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void post_dist_select(String select_dist){
-        if(select_dist!="Select District")
-        {
-            editor.putString("selected_city",select_dist);
-            Log.d("TAG", "post_dist_select: --------- "+select_dist);
-            editor.commit();
-        }
+
 
         if(district_spinner.getSelectedItem().toString()=="Select District")
             updateList(state_spinner.getSelectedItem().toString(),"all","help");
         else
-            updateList(state_spinner.getSelectedItem().toString(),district_spinner.getSelectedItem().toString(),"help");
+            updateList(state_spinner.getSelectedItem().toString(),select_dist,"help");
     }
 
     public void updateList(String state,String city,String type){
@@ -223,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         final firebase_update firebase_update_obj = new firebase_update(entry);
         firebase_update_obj.getDataFromFirebase(state,city,type);
         final ArrayList<Entry> emptylist= new ArrayList<>();
-        EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, emptylist);
+        EntryAdapter entryAdapter = new EntryAdapter(MainActivity.this,R.layout.req_help_list_item, emptylist);
         listView.setAdapter(entryAdapter);
         firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
             @Override
@@ -272,14 +251,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //private method of your class
-    private int getIndex(Spinner spinner, String myString){
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
-                return i;
-            }
-        }
 
-        return 0;
-    }
 }

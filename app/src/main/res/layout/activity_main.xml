@@ -9,8 +9,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_margin="10dp"
+        android:layout_height="55dp"
+        android:background="@drawable/et_style"
+        android:padding="10dp"
         android:orientation="horizontal">
         <Spinner
             android:id="@+id/state_spinner"
@@ -54,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/list"
+            android:layout_margin="5dp"
             android:background="@color/colorPrimary"
             android:divider="@color/colorPrimary"
             android:dividerHeight="5dp"
