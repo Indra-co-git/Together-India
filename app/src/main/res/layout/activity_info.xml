@@ -85,7 +85,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_margin="5dp"
+        android:background="@drawable/et_style"
         android:layout_marginBottom="1dp">
 
         <LinearLayout
