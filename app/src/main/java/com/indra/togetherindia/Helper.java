@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -27,7 +28,8 @@ public class Helper extends AppCompatActivity {
     String state_district_str = null;
 
     ProgressBar progressBar;
-
+    SearchView searchView;
+    List<Entry> helperlist=new ArrayList<Entry>();
     ListView listView;
     Spinner state_spinner,district_spinner;
     final List<String> state_arr = new ArrayList<String>();
@@ -38,6 +40,7 @@ public class Helper extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper);
 
+        searchView=findViewById(R.id.searchView);
         String TAG="Helper activity ";
         listView = findViewById(R.id.helpers_list);
 
@@ -92,7 +95,28 @@ public class Helper extends AppCompatActivity {
 
             }
         });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("search text change ", "onQueryTextChange: "+newText);
+                List<Entry> after_search_list=helperlist;
+                if (newText.length()>0)
+                {
+                    search search_obj=new search();
+                    after_search_list=search_obj.search_text(newText,after_search_list);
+                }
+
+
+                HelperAdapter helperAdapter = new HelperAdapter(getApplicationContext(),R.layout.helper_list_item, (ArrayList<Entry>) after_search_list);
+                listView.setAdapter(helperAdapter);
+                return false;
+            }
+        });
 
     }
 
@@ -173,6 +197,7 @@ public class Helper extends AppCompatActivity {
                 if(integer == 2)
                 {
 //                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
+                    helperlist=firebase_update_obj.all_required_data;
                     HelperAdapter helperAdapter = new HelperAdapter(getApplicationContext(),R.layout.helper_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
                     listView.setAdapter(helperAdapter);
                     progressBar.setVisibility(View.INVISIBLE);

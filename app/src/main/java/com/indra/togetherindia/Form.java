@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,10 +36,16 @@ public class Form extends AppCompatActivity {
     JSONObject state_district_json;
     String state_district_str = null;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+    String selected_state,selected_city;
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
     final List<String> sev_arr = new ArrayList<String>();
+
+    Spinner city_spinner,state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +56,8 @@ public class Form extends AppCompatActivity {
         final EditText name=findViewById(R.id.name);
         final EditText age=findViewById(R.id.age);
         final EditText mobile=findViewById(R.id.mobile);
-        final Spinner state=findViewById(R.id.state);
-        final Spinner city_spinner = findViewById(R.id.city);
+        state=findViewById(R.id.state);
+        city_spinner = findViewById(R.id.city);
         final Spinner severity=findViewById(R.id.sev);
         final EditText requirement=findViewById(R.id.requirement);
         Button submit_but=findViewById(R.id.submit);
@@ -64,6 +72,12 @@ public class Form extends AppCompatActivity {
              heading.setVisibility(View.INVISIBLE);
              //reqq.setVisibility(View.GONE);
         }
+
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sp.edit();
+        selected_state=sp.getString("selected_state","Select State");
+        selected_city=sp.getString("selected_city","Select District");
+
 
         state_arr.add("Select State");
         try {
@@ -91,30 +105,7 @@ public class Form extends AppCompatActivity {
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "onItemSelected: "+state_arr.get(position));
-                district_arr.clear();
-                district_arr.add("Select District");
-                try {
-                    JSONArray states=state_district_json.getJSONArray("states");
-                    for(int i=0;i<states.length();i++)
-                    {
-                        if(states.getJSONObject(i).getString("state")==state_arr.get(position)){
-                            JSONArray districts=states.getJSONObject(i).getJSONArray("districts");
-                            for(int j=0;j<districts.length();j++)
-                                district_arr.add(districts.getString(j));
-                            break;
-                        }
-
-                    }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,district_arr);
-                    //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
-
-                    city_spinner.setAdapter(arrayAdapter);
-                }
-                catch ( JSONException e) {
-                    e.printStackTrace();
-                    Log.e("TAG", "onCreate: "+e );
-                }
+                post_state_selected(state_arr.get(position));
             }
 
             @Override
@@ -124,6 +115,9 @@ public class Form extends AppCompatActivity {
 
             }
         });
+
+        state.setSelection(getIndex(state, selected_state));
+        post_state_selected(selected_state);
 
         final firebase_update firebase_update_obj = new firebase_update(entrydata);
 
@@ -186,5 +180,45 @@ public class Form extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void post_state_selected(String select_state) {
+        district_arr.clear();
+        district_arr.add("Select District");
+        try {
+            JSONArray states=state_district_json.getJSONArray("states");
+            for(int i=0;i<states.length();i++)
+            {
+                if(states.getJSONObject(i).getString("state")==select_state){
+                    JSONArray districts=states.getJSONObject(i).getJSONArray("districts");
+                    for(int j=0;j<districts.length();j++)
+                        district_arr.add(districts.getString(j));
+                    break;
+                }
+
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.spinner_item_back,district_arr);
+            //arrayAdapter.setDropDownViewResource(R.layout.spinner_item_back);
+
+            city_spinner.setAdapter(arrayAdapter);
+            Log.d("TAG", "post_state_selected:   city spinner set"+district_arr);
+
+            city_spinner.setSelection(getIndex(city_spinner, selected_city));
+        }
+        catch ( JSONException e) {
+            e.printStackTrace();
+            Log.e("TAG", "onCreate: "+e );
+        }
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+//            Log.d("TAG", "getIndex: "+spinner.getItemAtPosition(i));
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 }
