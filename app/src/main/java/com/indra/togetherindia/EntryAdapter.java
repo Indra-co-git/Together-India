@@ -104,7 +104,7 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
     {
         stagetv.setTextColor(ContextCompat.getColor(getContext(),R.color.yello));
     }
-    else if(stage.equals("SEVIOR")){
+    else if(stage.equals("SEVERE")){
         stagetv.setTextColor(ContextCompat.getColor(getContext(),R.color.RED));
     }
     else {

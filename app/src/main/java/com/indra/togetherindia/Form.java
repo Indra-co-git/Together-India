@@ -123,7 +123,7 @@ public class Form extends AppCompatActivity {
 
         sev_arr.add("LOW");
         sev_arr.add("MILD");
-        sev_arr.add("SEVIOR");
+        sev_arr.add("SEVERE");
         ArrayAdapter<String> sevArraryadapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,sev_arr);
         severity.setAdapter(sevArraryadapter);
 
