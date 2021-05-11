@@ -1,6 +1,7 @@
 package com.indra.togetherindia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -96,6 +96,7 @@ public class Helper extends AppCompatActivity {
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -115,6 +116,13 @@ public class Helper extends AppCompatActivity {
                 HelperAdapter helperAdapter = new HelperAdapter(getApplicationContext(),R.layout.helper_list_item, (ArrayList<Entry>) after_search_list);
                 listView.setAdapter(helperAdapter);
                 return false;
+            }
+        });
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //searchView.onActionViewExpanded();
+                searchView.setIconified(false);
             }
         });
 
