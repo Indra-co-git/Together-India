@@ -45,6 +45,15 @@
         android:layout_height="wrap_content"
 
         android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_text_view"
+            android:textSize="30sp"
+            android:textColor="#655656"
+            android:text="No Data Present !!"
+            android:layout_centerInParent="true"
+            />
         <ProgressBar
             android:layout_width="70dp"
             android:layout_height="70dp"
@@ -53,14 +62,13 @@
             android:outlineAmbientShadowColor="@color/colorAccent"
             android:id="@+id/pbh"
             android:layout_centerInParent="true"/>
-    <ListView
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/helpers_list"
-        android:background="@color/colorPrimary"
-        android:divider="@color/colorPrimary"
-        android:dividerHeight="5dp"/>
+        <ListView
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/helpers_list"
+            android:divider="@color/colorPrimary"
+            android:dividerHeight="5dp"/>
     </RelativeLayout>
 
 </LinearLayout>

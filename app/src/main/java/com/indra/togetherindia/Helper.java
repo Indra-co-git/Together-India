@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,7 @@ public class Helper extends AppCompatActivity {
     JSONObject state_district_json;
     String state_district_str = null;
 
+    TextView emptyview;
     ProgressBar progressBar;
     SearchView searchView;
     List<Entry> helperlist=new ArrayList<Entry>();
@@ -45,11 +47,10 @@ public class Helper extends AppCompatActivity {
         listView = findViewById(R.id.helpers_list);
 
         progressBar = findViewById(R.id.pbh);
-        //emptyview = findViewById(R.id.empty_text);
+        emptyview = findViewById(R.id.empty_text_view);
         state_spinner = (Spinner)findViewById(R.id.state_spinnerh);
         district_spinner = (Spinner)findViewById(R.id.district_spinnerh);
-
-        //emptyview.setVisibility(View.INVISIBLE);
+        emptyview.setVisibility(View.INVISIBLE);
 
         updateList("all","all","helper");
 
@@ -87,6 +88,7 @@ public class Helper extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
+                emptyview.setVisibility(View.INVISIBLE);
                 post_dist_select(district_arr.get(position));
             }
 
@@ -133,6 +135,7 @@ public class Helper extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
+                emptyview.setVisibility(View.INVISIBLE);
                 post_state_select(state_spinner.getSelectedItem().toString());
             }
 
@@ -202,13 +205,18 @@ public class Helper extends AppCompatActivity {
             @Override
             public void onChanged(Integer integer) {
                 Log.d("Inte",integer.toString());
+                if(integer == 1)
+                {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    emptyview.setVisibility(View.VISIBLE);
+                }
                 if(integer == 2)
                 {
-//                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
                     helperlist=firebase_update_obj.all_required_data;
                     HelperAdapter helperAdapter = new HelperAdapter(getApplicationContext(),R.layout.helper_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
                     listView.setAdapter(helperAdapter);
                     progressBar.setVisibility(View.INVISIBLE);
+                    emptyview.setVisibility(View.INVISIBLE);
 
                 }
                 if(integer == -1)

@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
+                emptyview.setVisibility(View.INVISIBLE);
                 post_dist_select(district_arr.get(position));
             }
 
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
+                emptyview.setVisibility(View.INVISIBLE);
                 Log.d("selected state", "onItemSelected: ---- "+state_spinner.getSelectedItem().toString());
                 post_state_select(state_spinner.getSelectedItem().toString());
             }
@@ -286,16 +288,19 @@ public class MainActivity extends AppCompatActivity {
         firebase_update_obj.get_data_status.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                if(integer == 1)
+                {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    emptyview.setVisibility(View.VISIBLE);
+                }
                 if(integer == 2)
                 {
 //                    Log.d("Tag 1",firebase_update_obj.all_required_data.toString());
                     EntryAdapter entryAdapter = new EntryAdapter(getApplicationContext(),R.layout.req_help_list_item, (ArrayList<Entry>) firebase_update_obj.all_required_data);
                     listView.setAdapter(entryAdapter);
                     progressBar.setVisibility(View.INVISIBLE);
-                    if(firebase_update_obj.all_required_data.size()==0)
-                    {
-                        emptyview.setVisibility(View.VISIBLE);
-                    }
+                    emptyview.setVisibility(View.INVISIBLE);
+
                 }
             }
         });

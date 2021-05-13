@@ -48,8 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/empty_text"
-            android:textSize="40sp"
-            android:textColor="#392E2E"
+            android:textSize="30sp"
+            android:textColor="#655656"
             android:text="No Data Present !!"
             android:layout_centerInParent="true"
             />
@@ -67,7 +67,6 @@
             android:layout_height="match_parent"
             android:id="@+id/list"
             android:layout_margin="5dp"
-            android:background="@color/colorPrimary"
             android:divider="@color/colorPrimary"
             android:dividerHeight="5dp"
             >
