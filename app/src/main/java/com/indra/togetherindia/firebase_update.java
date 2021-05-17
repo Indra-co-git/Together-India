@@ -47,6 +47,10 @@ public void setDataOnFirebase(String type) throws JSONException {
     checkAndSetData(entrydata,type);
 }
 
+//public void getDataFromFirebase(String type){
+//
+//}
+
 public void getDataFromFirebase(String state,String city,String type){
     Log.d(TAG, "getDataFromFirebase"+state+city);
     if(state=="Select State"||state=="India")
@@ -55,6 +59,7 @@ public void getDataFromFirebase(String state,String city,String type){
         city="all";
     get_data_status.setValue(0);
     all_required_data.clear();
+
     if(state=="all"){
         try {
             dataRef.child(type).child("all_data").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -178,8 +183,14 @@ private void sort_list_data(){
     private boolean setData(Entry entrydata,String type) throws JSONException {
         Log.d(TAG, "setData: "+type);
         try {
-            dataRef.child(type).child(entrydata.getState().toString()).child(entrydata.getCity().toString()).child(entrydata.getMobileNo().toString()).setValue(entrydata);
-            dataRef.child(type).child("all_data").child(entrydata.getMobileNo().toString()).setValue(entrydata);
+            if(type.equals("vaccine"))
+            {
+                dataRef.child(type).child(entrydata.getState().toString()).child(entrydata.getCity().toString()).child(entrydata.getEmail().toString()).setValue(entrydata);
+                dataRef.child(type).child("all_data").child(entrydata.getEmail().toString()).setValue(entrydata);
+            }
+            else
+            {dataRef.child(type).child(entrydata.getState().toString()).child(entrydata.getCity().toString()).child(entrydata.getMobileNo().toString()).setValue(entrydata);
+            dataRef.child(type).child("all_data").child(entrydata.getMobileNo().toString()).setValue(entrydata);}
             uplaod_status.setValue(2);
         }
         catch (Exception e){

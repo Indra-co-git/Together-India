@@ -10,6 +10,34 @@ public class Entry {
     private String state;
     private String city;
     private String dateTime;
+    private  String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(String android_id) {
+        this.android_id = android_id;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    private String android_id;
+    private String pincode;
 
     public Entry()
     {
@@ -24,6 +52,20 @@ public class Entry {
         this.state = state;
         this.city = city;
         this.dateTime = dateTime;
+    }
+
+    public Entry(String name, String age, String mobileNo, String severity, String requirement, String state, String city, String date,String email,String pincode,String android_id) {
+        this.name = name;
+        this.age = age;
+        this.mobileNo = mobileNo;
+        this.severity = severity;
+        this.requirement = requirement;
+        this.state = state;
+        this.city = city;
+        this.dateTime = dateTime;
+        this.email=email;
+        this.pincode=pincode;
+        this.android_id=android_id;
     }
 
     public String getName() {
