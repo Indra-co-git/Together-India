@@ -57,13 +57,26 @@
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <Button
                 android:id="@+id/details"
-                android:background="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Details"/>
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="Details" />
+
+            <Button
+                android:id="@+id/set_alert"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="Set Alert" />
         </LinearLayout>
 
     </LinearLayout>

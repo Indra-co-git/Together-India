@@ -103,17 +103,38 @@ public class MainActivity extends AppCompatActivity {
         state_arr.add("India");
         district_arr.add("Select District");
 
+
+
+        /// vaccine
+
+        vaccine_util vaccine_util_obj=new vaccine_util(this);
+
+        vaccine_util_obj.set_state_dist_status.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer == 1)
+                {
+                    Log.d(TAG, "onChanged: calling vaccine_util_obj.get_brief_info");
+                    vaccine_util_obj.get_brief_info("jharkhand","Select District","");
+                }
+                if(integer == 0)
+                {
+
+                }
+            }
+        });
+
         details = findViewById(R.id.details);
 
         // Instantiate the RequestQueue.
         queue = Volley.newRequestQueue(this);
         //String url ="https://cdn-api.co-vin.in/api/v2/admin/location/states";
 
-        getStates();
+//        getStates();
         //gettotal(-1,-1,"19-05-2021");
 
         Log.d("here","contrl is here");
-        String len = String.valueOf(getStates().size());
+        String len = String.valueOf(statemapping.size());
 
         av45.setText(len);
 
