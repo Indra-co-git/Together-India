@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,13 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +36,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,28 +46,35 @@ public class MainActivity extends AppCompatActivity {
     JSONObject state_district_json;
     String state_district_str = null;
     String selected_state,selected_city;
+    Map<String,Integer> statemapping,districtmapping;
+    Map<Integer,ArrayList<String>> distsstatewise;
 
     public static PackageManager packageManager;
     ProgressBar progressBar;
 
 
-    TextView emptyview;
+    TextView emptyview,av45,av18;
     Spinner state_spinner,district_spinner;
     SearchView searchView;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
-    Button help;
+    Button help,details;
+    RequestQueue queue;
+    StringRequest stringRequest;
 
     firebase_update firebase_update_obj;
+    int status;
 
     final List<String> state_arr = new ArrayList<String>();
     final List<String> district_arr = new ArrayList<String>();
     ListView listView;
+    int temp_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        status = 0;
         String TAG="Main activity ";
         listView = findViewById(R.id.list);
         progressBar = findViewById(R.id.pb);
@@ -66,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
         district_spinner = (Spinner)findViewById(R.id.district_spinner);
         searchView=(SearchView)findViewById(R.id.search);
         emptyview.setVisibility(View.INVISIBLE);
+        av18 = findViewById(R.id.a18);
+        av45 = findViewById(R.id.a45);
+
+        statemapping = new HashMap<>();
+        districtmapping = new HashMap<>();
+        distsstatewise = new HashMap<>();
 
         packageManager = getPackageManager();
         sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -80,6 +103,27 @@ public class MainActivity extends AppCompatActivity {
         state_arr.add("India");
         district_arr.add("Select District");
 
+        details = findViewById(R.id.details);
+
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
+        //String url ="https://cdn-api.co-vin.in/api/v2/admin/location/states";
+
+        getStates();
+        //gettotal(-1,-1,"19-05-2021");
+
+        Log.d("here","contrl is here");
+        String len = String.valueOf(getStates().size());
+
+        av45.setText(len);
+
+        details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Vaccine.class);
+                startActivity(intent);
+            }
+        });
         // gets states
         try {
             InputStream is = getApplicationContext().getAssets().open("state_district.txt");
@@ -344,5 +388,289 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return 0;
+    }
+
+    public ArrayList<String> getStates(){
+
+        ArrayList<String> states = new ArrayList<>();
+        states.clear();
+        String url = "https://cdn-api.co-vin.in/api/v2/admin/location/states";
+
+        stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject all = new JSONObject(response);
+                            JSONArray statesarray = all.getJSONArray("states");
+                            Log.d("AMAN",  statesarray.toString());
+
+
+                            for (int i=0 ; i< statesarray.length(); i++)
+                            {
+                                JSONObject jo = statesarray.getJSONObject(i);
+                                String state = jo.getString("state_name");
+                                int id = jo.getInt("state_id");
+                                getdistsformstateid(id);
+                                statemapping.put(state,id);
+                                states.add(state);
+
+                            }
+
+                            status++;
+                            av18.setText(String.valueOf(distsstatewise.size()));
+                            av45.setText(String.valueOf(states.size()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error","error");
+            }
+        });
+
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+        return states;
+
+    }
+
+//    public void getrandom()
+//    {
+//        // Request a string response from the provided URL.
+//        stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // Display the first 500 characters of the response string.
+//                        textView.setText("Response is: "+ response.substring(0,500));
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                textView.setText("That didn't work!");
+//            }
+//        });
+//
+//    }
+    public int getstatedistslot(String state,String dist)
+    {
+
+        return 0;
+    }
+    public ArrayList<String> getdistsformstateid(int stateid) {
+
+        ArrayList<String> dists = new ArrayList<>();
+        dists.clear();
+        String url = "https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+String.valueOf(stateid);
+
+        stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject all = new JSONObject(response);
+                            JSONArray distarray = all.getJSONArray("districts");
+
+                            if(stateid < 5)
+                            Log.d("AMAN1",String.valueOf(distarray));
+                            for (int i=0 ; i< distarray.length(); i++)
+                            {
+                                JSONObject jo = distarray.getJSONObject(i);
+                                String dist = jo.getString("district_name");
+                                int id = jo.getInt("district_id");
+                                districtmapping.put(dist,id);
+                                dists.add(dist);
+
+                            }
+                            distsstatewise.put(stateid,dists);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error","error");
+            }
+        });
+
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+        return dists;
+
+    }
+
+    public int gettotal(int dist_id,int state_id,String date)
+    {
+        if(dist_id== -1 && state_id ==-1)
+        {
+            int over = 0;
+            temp_total = 0;
+            ArrayList<Integer> dists = new ArrayList<>(districtmapping.values());
+            for(int i = 0 ; i < dists.size() ; i++) {
+                String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + String.valueOf(dists.get(i)) + "&date=" + date;
+
+                stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject all = new JSONObject(response);
+                                    JSONArray cetrearray = all.getJSONArray("sessions");
+
+
+                                    int tot = 0;
+
+                                    for (int i = 0; i < cetrearray.length(); i++) {
+                                        JSONObject jo = cetrearray.getJSONObject(i);
+                                        String vaccine = jo.getString("vaccine");
+                                        int min_age_limit = jo.getInt("min_age_limit");
+                                        int available_capacity = jo.getInt("available_capacity");
+                                        tot = tot + available_capacity;
+
+                                    }
+                                    temp_total = tot + temp_total;
+                                    Log.d("AMA",String.valueOf(temp_total));
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", "error");
+                    }
+                });
+                over++;
+            }
+
+            queue.add(stringRequest);
+
+
+            while(over < dists.size() )
+            {
+
+            }
+            av45.setText(String.valueOf(temp_total));
+            Log.d("AMA",String.valueOf(temp_total));
+            return temp_total;
+        }
+        else if(dist_id == -1)
+        {
+            ArrayList<String> dists = distsstatewise.get(state_id);
+            int over = 0;
+            temp_total = 0;
+            for(int i = 0 ; i < dists.size() ; i++) {
+                String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + String.valueOf(districtmapping.get(dists.get(i))) + "&date=" + date;
+
+                stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject all = new JSONObject(response);
+                                    JSONArray cetrearray = all.getJSONArray("sessions");
+
+
+                                    int tot = 0;
+
+                                    for (int i = 0; i < cetrearray.length(); i++) {
+                                        JSONObject jo = cetrearray.getJSONObject(i);
+                                        String vaccine = jo.getString("vaccine");
+                                        int min_age_limit = jo.getInt("min_age_limit");
+                                        int available_capacity = jo.getInt("available_capacity");
+                                        tot = tot + available_capacity;
+
+                                    }
+                                    temp_total = tot + temp_total;
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", "error");
+                    }
+                });
+                over++;
+            }
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+
+
+            while(over < dists.size() )
+            {
+
+            }
+            return temp_total;
+
+
+
+        }
+        if(state_id==-1)
+        {
+            int over = 0;
+            temp_total = 0;
+                String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + String.valueOf(dist_id) + "&date=" + date;
+
+                stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject all = new JSONObject(response);
+                                    JSONArray cetrearray = all.getJSONArray("sessions");
+
+
+                                    int tot = 0;
+
+                                    for (int i = 0; i < cetrearray.length(); i++) {
+                                        JSONObject jo = cetrearray.getJSONObject(i);
+                                        String vaccine = jo.getString("vaccine");
+                                        int min_age_limit = jo.getInt("min_age_limit");
+                                        int available_capacity = jo.getInt("available_capacity");
+                                        tot = tot + available_capacity;
+
+                                    }
+                                    temp_total = tot + temp_total;
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", "error");
+                    }
+                });
+
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+
+            return temp_total;
+        }
+        return 0;
+    }
+
+    public int getdistdata(int dist_id,String date)
+    {
+
+        return 0;
+
     }
 }
