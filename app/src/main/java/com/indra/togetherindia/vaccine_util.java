@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,8 +111,8 @@ public class vaccine_util {
                             JSONObject all = new JSONObject(response);
                             JSONArray distarray = all.getJSONArray("districts");
 
-                            if(stateid < 5)
-                                Log.d("get_dists_id ",distarray.length()+String.valueOf(distarray));
+//                            if(stateid < 5)
+                            Log.d("get_dists_id -","for state id - "+stateid+"dist length"+distarray.length()+String.valueOf(distarray));
                             for (int i=0 ; i< distarray.length(); i++)
                             {
                                 JSONObject jo = distarray.getJSONObject(i);
@@ -123,7 +124,7 @@ public class vaccine_util {
 
                             }
                             distsstatewise.put(stateid,dists);
-                            if(stateid==37){
+                            if(stateid==36){
                                 set_state_dist_status.setValue(1);
                                 Log.d(TAG, "onResponse: state size"+statemapping.size()+" dist size " + districtmapping.size() );
                             }
@@ -134,7 +135,7 @@ public class vaccine_util {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Error","error");
+                Log.e("Error","error in get dist id");
             }
         });
 
@@ -149,7 +150,9 @@ public class vaccine_util {
                                String dist,
                                String date){
 
-        Log.d(TAG, "get_brief_info: input state, dist, date" +state+dist+date);
+        all_centre_wise_vaccine_info.clear();
+
+        Log.d(TAG, "get_brief_info: input state, dist, date" +state+" "+dist+date);
 
         state=state.toLowerCase();
         dist=dist.toLowerCase();
@@ -258,6 +261,7 @@ public class vaccine_util {
             int over = 0;
             temp_total = 0;
             ArrayList<String> dists =  distsstatewise.get(state_id);
+            Log.d(TAG, "get_brief_info: "+distsstatewise +" "+state_id);
             Integer dists_size=dists.size();
 
 
@@ -275,18 +279,14 @@ public class vaccine_util {
 //                                    Log.d(TAG, "onResponse: "+response);
                                     JSONObject all = new JSONObject(response);
                                     JSONArray cetrearray = all.getJSONArray("sessions");
-
-                                    int tot = 0;
+;
 
                                     Log.d(TAG, "onResponse: cetrearray.length() "+cetrearray.length()+" "+response_count);
 
                                     for (int i = 0; i < cetrearray.length(); i++) {
 
-
-//                                        all_centre_wise_vaccine_info.add(new Gson().fromJson(cetrearray.get(i).toString(), vaccine_info.class));
+                                        all_centre_wise_vaccine_info.add(new Gson().fromJson(cetrearray.get(i).toString(), vaccine_info.class));
                                     }
-                                    temp_total = tot + temp_total;
-                                    Log.d("AMA",String.valueOf(temp_total));
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -295,13 +295,13 @@ public class vaccine_util {
                                 if(response_count==dists_size)
                                 {
                                     vaccine_info_status.setValue(1);
-                                    Log.d(TAG, "onResponse: vaccine_info_status  complete  -- "+all_centre_wise_vaccine_info.size());
+                                    Log.d(TAG, "onResponse: vaccine_info_status  complete  -- "+all_centre_wise_vaccine_info.size()+all_centre_wise_vaccine_info.get(0).getDistrict_name());
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Error", "error");
+                        Log.e("Error", "error - in get info");
                         vaccine_info_status.setValue(-1);
                     }
                 });
@@ -313,11 +313,42 @@ public class vaccine_util {
             }
 
 
-            while(over < dists.size() )
-            {
+        }
 
-            }
-            Log.d("AMA",String.valueOf(temp_total));
+        else{
+            int over = 0;
+            temp_total = 0;
+            String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + String.valueOf(dist_id) + "&date=" + date;
+
+            stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject all = new JSONObject(response);
+                                JSONArray cetrearray = all.getJSONArray("sessions");
+
+
+
+                                for (int i = 0; i < cetrearray.length(); i++) {
+
+                                    all_centre_wise_vaccine_info.add(new Gson().fromJson(cetrearray.get(i).toString(), vaccine_info.class));
+                                }
+                                vaccine_info_status.setValue(1);
+                                Log.d(TAG, "onResponse: vaccine_info_status  complete  -- "+all_centre_wise_vaccine_info.size()+all_centre_wise_vaccine_info.get(0).getDistrict_name());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Error", "error in "+error);
+                }
+            });
+
+            queue2.add(stringRequest);
 
         }
     }

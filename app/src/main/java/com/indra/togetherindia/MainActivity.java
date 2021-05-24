@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 if(integer == 1)
                 {
                     Log.d(TAG, "onChanged: calling vaccine_util_obj.get_brief_info");
-                    vaccine_util_obj.get_brief_info("jharkhand","Select District","");
+                    vaccine_util_obj.get_brief_info("-1","-1","");
                 }
                 if(integer == 0)
                 {
