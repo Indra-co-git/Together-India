@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/et_style">
+
+    <TextView
+        android:id="@+id/vaccine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="vaccine_name"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/min_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="min. age - "
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="@+id/vaccine_name"
+        app:layout_constraintEnd_toStartOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/vaccine_name"
+        app:layout_constraintTop_toTopOf="@+id/vaccine_name"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="18"
+        app:layout_constraintBottom_toBottomOf="@+id/min_age"
+        app:layout_constraintStart_toEndOf="@+id/min_age"
+        app:layout_constraintTop_toTopOf="@+id/min_age" />
+
+    <TextView
+        android:id="@+id/available_capacity_dose1_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="available capacity dose1 - "
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/vaccine_name"
+        app:layout_constraintTop_toBottomOf="@+id/vaccine_name" />
+
+    <TextView
+        android:id="@+id/available_capacity_dose2_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="available capacity dose2 - "
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/vaccine_name"
+        app:layout_constraintTop_toBottomOf="@+id/available_capacity_dose1_txt" />
+
+    <TextView
+        android:id="@+id/available_capacity_dose1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/available_capacity_dose1_txt"
+        app:layout_constraintStart_toEndOf="@+id/available_capacity_dose1_txt"
+        app:layout_constraintTop_toTopOf="@+id/available_capacity_dose1_txt" />
+
+    <TextView
+        android:id="@+id/available_capacity_dose2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/available_capacity_dose2_txt"
+        app:layout_constraintStart_toEndOf="@+id/available_capacity_dose2_txt"
+        app:layout_constraintTop_toTopOf="@+id/available_capacity_dose2_txt" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Fee - "
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="@+id/min_age"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="@+id/min_age" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/set_alert_but"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/bluerec"
+        android:text="Set Alert"
+        app:layout_constraintBottom_toBottomOf="@+id/available_capacity_dose2_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/available_capacity_dose1_txt" />
+
+    <TextView
+        android:id="@+id/dist_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Dist. - "
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/available_capacity_dose2_txt"
+        app:layout_constraintTop_toBottomOf="@+id/available_capacity_dose2_txt" />
+
+    <TextView
+        android:id="@+id/dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/dist_view"
+        app:layout_constraintStart_toEndOf="@+id/dist_view"
+        app:layout_constraintTop_toTopOf="@+id/dist_view" />
+
+    <TextView
+        android:id="@+id/block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="Block"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="@+id/dist_view"
+        app:layout_constraintEnd_toStartOf="@+id/block"
+        app:layout_constraintTop_toTopOf="@+id/dist_view"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Pincode"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/dist_view"
+        app:layout_constraintTop_toBottomOf="@+id/dist_view" />
+
+    <TextView
+        android:id="@+id/pincode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/pincode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pincode" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
