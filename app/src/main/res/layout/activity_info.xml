@@ -42,36 +42,6 @@
             android:text="( contact.to.indra@gmail.com )"
             android:textStyle="bold"
             />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:layout_margin="5dp"
-                android:text="Aman Gupta"
-                android:textStyle="bold|italic"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:layout_margin="5dp"
-                android:text="Rajan Jaiswal"
-                android:textStyle="bold|italic"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                />
-        </LinearLayout>
-
 
     </LinearLayout>
 
